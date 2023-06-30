@@ -48,6 +48,9 @@ class TallyRepository:
             self.create_tally(tally_record)
             for tally_record in tally_record_data  # noqa
         ]
+
+        self.db.add_all(tally_records)
+        self.db.commit()
         return tally_records
 
     def delete_tally_by_bill_id(self, bill_id: str) -> None:

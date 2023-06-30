@@ -6,7 +6,7 @@ from schemas import BillCreateSchema, BillResponseSchema, BillUpdateSchema
 from models.db import get_db
 from sqlalchemy.orm import Session
 from fastapi.params import Depends
-from repositories import BillRepository, UserRepository
+from repositories import BillRepository, UserRepository, TallyRepository
 from models import Bill, User
 from common import MemberValidationError
 import uuid
@@ -42,9 +42,7 @@ def create_bill(
         raise HTTPException(status_code=500, detail="Error creating bill")
 
     try:
-        pass
-        # create tally for bill
-        # save tallies
+        _ = TallyRepository(db).bill_to_tally(bill=bill)
     except Exception as e:
         raise HTTPException(
             status_code=500,
@@ -74,14 +72,15 @@ def update_bill(
         raise HTTPException(
             status_code=500, detail=f"Error while updating bill {str(e)}"  # noqa
         )
-
-    try:
-        pass
-        # delete exisging bill tallies
-        # recompute and save updated tallies
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error creating tally records for bill {str(e)}",  # noqa
-        )
+    if bill:
+        try:
+            _ = TallyRepository(db).delete_tally_by_bill_id(
+                bill_id=str(bill.id)
+            )  # noqa
+            _ = TallyRepository(db).bill_to_tally(bill)
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error updating tally records for bill {str(e)}",  # noqa
+            )
     return bill
