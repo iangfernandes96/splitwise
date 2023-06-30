@@ -4,6 +4,7 @@ from .user import UserSchema, UserCreateSchema, UserResponseSchema
 from .token import TokenDataSchema, TokenSchema
 from .group import GroupCreateSchema, GroupResponseSchema
 from .bill import BillCreateSchema, BillUpdateSchema, BillResponseSchema
+from .tally import TallyCreateSchema, TallyResponseSchema
 
 __all__ = [
     "UserSchema",
@@ -16,4 +17,6 @@ __all__ = [
     "BillCreateSchema",
     "BillUpdateSchema",
     "BillResponseSchema",
+    "TallyCreateSchema",
+    "TallyResponseSchema",
 ]

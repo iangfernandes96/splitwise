@@ -39,7 +39,17 @@ def create_bill(
             status_code=400, detail="Some members are not on splitwise"
         )  # noqa
     except Exception:
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail="Error creating bill")
+
+    try:
+        pass
+        # create tally for bill
+        # save tallies
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error creating tally records for bill {str(e)}",  # noqa
+        )
     return bill
 
 
@@ -60,6 +70,18 @@ def update_bill(
         raise HTTPException(
             status_code=400, detail="Some members are not on splitwise"
         )  # noqa
-    except Exception:
-        raise HTTPException(status_code=500, detail="Something went wrong")
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error while updating bill {str(e)}"  # noqa
+        )
+
+    try:
+        pass
+        # delete exisging bill tallies
+        # recompute and save updated tallies
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error creating tally records for bill {str(e)}",  # noqa
+        )
     return bill
