@@ -40,14 +40,14 @@ def create_bill(
         )  # noqa
     except Exception:
         raise HTTPException(status_code=500, detail="Error creating bill")
-
-    try:
-        _ = TallyRepository(db).bill_to_tally(bill=bill)
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error creating tally records for bill {str(e)}",  # noqa
-        )
+    if bill:
+        try:
+            _ = TallyRepository(db).bill_to_tally(bill=bill)
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Error creating tally records for bill {str(e)}",  # noqa
+            )
     return bill
 
 

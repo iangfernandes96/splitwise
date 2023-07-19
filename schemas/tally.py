@@ -4,8 +4,8 @@ from pydantic import BaseModel, UUID4
 
 
 class TallyCreateSchema(BaseModel):
-    user1: str
-    user2: str
+    payer: str
+    payee: str
     amount: float
     bill_id: str
 

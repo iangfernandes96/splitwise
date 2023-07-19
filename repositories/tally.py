@@ -10,19 +10,19 @@ class TallyRepository:
     def __init__(self, db: Session) -> None:
         self.db = db
 
-    def get_tally_by_user1(self, email: str) -> Optional[list[Tally]]:
-        return self.db.query(Tally).filter(Tally.user1 == email).all()
+    def get_tally_by_payer(self, email: str) -> Optional[list[Tally]]:
+        return self.db.query(Tally).filter(Tally.payer == email).all()
 
-    def get_tally_by_user2(self, email: str) -> Optional[list[Tally]]:
-        return self.db.query(Tally).filter(Tally.user2 == email).all()
+    def get_tally_by_payee(self, email: str) -> Optional[list[Tally]]:
+        return self.db.query(Tally).filter(Tally.payee == email).all()
 
     def get_tally_by_bill_id(self, bill_id: str) -> Optional[list[Tally]]:
         return self.db.query(Tally).filter(Tally.bill_id == bill_id).all()
 
     def create_tally(self, tally_data: TallyCreateSchema) -> Optional[Tally]:
         tally = Tally(
-            user1=tally_data.user1,
-            user2=tally_data.user2,
+            payer=tally_data.payer,
+            payee=tally_data.payee,
             amount=tally_data.amount,
             bill_id=tally_data.bill_id,
         )
@@ -36,8 +36,8 @@ class TallyRepository:
         payer = bill.payer
         tally_record_data = [
             TallyCreateSchema(
-                user1=payer,  # type: ignore
-                user2=member,  # type: ignore
+                payer=payer,  # type: ignore
+                payee=member,  # type: ignore
                 amount=float(bill.amount / bill_members),  # type: ignore
                 bill_id=str(bill.id),
             )
